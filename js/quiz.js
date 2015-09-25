@@ -1,6 +1,6 @@
 var score = 0; //SEt score to 0
 var total = 10; //Total number of questions
-var point = 1; //Points per correct answer
+var point = 10; //Points per correct answer
 var highest = total * point;
 
 //Initializer
@@ -26,66 +26,41 @@ $(document).ready(function(){
     
     //Show the first question
     $('#q1').show();
-    $('#q1 #submit').click(function(){
+    $('.questionForm #submit').click(function(){
+        //Get data attributes
+        current = $(this).parents('form:first').data('question');
+        next = $(this).parents('form:first').data('question') + 1;
+        //Hide all questions
         $('.questionForm').hide();
-        $('#q2').fadeIn(300);
+        //Show next question
+        $('#q' + next + '').fadeIn(300);
+        process('' + current + '');
         return false;
-    });
-    
-    $('#q2 #submit').click(function(){
-        $('.questionForm').hide();
-        $('#q3').fadeIn(300);
-        return false;
-    });
-    
-    $('#q3 #submit').click(function(){
-        $('.questionForm').hide();
-        $('#q4').fadeIn(300);
-        return false;
-    });
-    
-    $('#q4 #submit').click(function(){
-        $('.questionForm').hide();
-        $('#q5').fadeIn(300);
-        return false;
-    });
-    
-    $('#q5 #submit').click(function(){
-        $('.questionForm').hide();
-        $('#q6').fadeIn(300);
-        return false;
-    });
-    
-    $('#q6 #submit').click(function(){
-        $('.questionForm').hide();
-        $('#q7').fadeIn(300);
-        return false;
-    });
-    
-    $('#q7 #submit').click(function(){
-        $('.questionForm').hide();
-        $('#q8').fadeIn(300);
-        return false;
-    });
-    
-    $('#q8 #submit').click(function(){
-        $('.questionForm').hide();
-        $('#q9').fadeIn(300);
-        return false;
-    });
-    
-    $('#q9 #submit').click(function(){
-        $('.questionForm').hide();
-        $('#q10').fadeIn(300);
-        return false;
-    });
-    
-    $('#q9 #submit').click(function(){
-        $('.questionForm').hide();
-        $('#results').fadeIn(300);
-        return false;
-    });
+    });     
 });
+
+//Process the answers
+function process(n){
+    //Get input value
+    var submitted = $('input[name=q'+n+']:checked').val();
+    
+    if(submitted == sessionStorage.getItem('a' + n + '')){
+            score = score + point;
+        }    
+   
+    if(n == total){    
+        $('#results').html('<h3>Your final score is: ' + score + ' out of ' + highest + '</h3><a href="index.html">Take Quiz Again!</a>')
+        if(score == highest){
+            $('#results').append('<p>You are an HTML5 master!</p>');
+        }
+        else if(score == highest - point || score == highest - point - point){
+            $('#results').append('<p>Good job!</p>');
+        }
+    }
+    return false;
+}
+
 
 //Add event listener
 window.addEventListener('load',init,false);
+
